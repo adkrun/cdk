@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/adkrun/Agentfile/go/constants"
+	"github.com/adkrun/cdk/go/constants"
 	"github.com/goccy/go-yaml"
 )
 

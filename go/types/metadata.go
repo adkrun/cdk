@@ -3,7 +3,7 @@ package types
 import (
 	"fmt"
 
-	"github.com/adkrun/Agentfile/go/constants"
+	"github.com/adkrun/cdk/go/constants"
 )
 
 func NewMetadata(name, description string, keyword ...string) Metadata {

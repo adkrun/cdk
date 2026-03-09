@@ -1,6 +1,6 @@
-module github.com/adkrun/Agentfile/go
+module github.com/adkrun/cdk/go
 
-go 1.23.2
+go 1.24.1
 
 require (
 	github.com/goccy/go-json v0.10.5

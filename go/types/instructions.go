@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/adkrun/Agentfile/go/constants"
+	"github.com/adkrun/cdk/go/constants"
 )
 
 func NewInstructions(value string) Instructions {
