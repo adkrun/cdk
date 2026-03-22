@@ -64,11 +64,11 @@ type (
 	}
 
 	Metadata struct {
-		Name        string   `yaml:"name" validate:"required,namepattern"`
-		Description string   `yaml:"description" validate:"required,descriptionpattern"`
-		Version     string   `yaml:"version" validate:"omitempty,versionpattern"`
-		License     string   `yaml:"license" validate:""`
-		Keywords    Keywords `yaml:"keywords" validate:""`
+		Name        string   `yaml:"name"`
+		Description string   `yaml:"description"`
+		Version     string   `yaml:"version"`
+		License     string   `yaml:"license"`
+		Keywords    Keywords `yaml:"keywords"`
 	}
 
 	Code struct {
@@ -78,62 +78,105 @@ type (
 	}
 
 	Variable struct {
-		Name        string `json:"name" validate:"required,variablenamepattern"`
-		Description string `json:"description" validate:"required,variabledescriptionpattern"`
+		Name        string `json:"name"`
+		Description string `json:"description"`
+		Secret      bool   `json:"secret,omitempty"`
 	}
 
 	Schema struct {
-		// Optional. The value should be validated against any (one or more) of the subschemas in the list.
-		AnyOf []*Schema `json:"anyOf,omitempty"`
-		// Optional. Default value of the data.
-		Default any `json:"default,omitempty"`
-		// Optional. The description of the data.
-		Description string `json:"description,omitempty"`
-		// Optional. Possible values of the element of primitive type with enum format. Examples:
-		// 1. We can define direction as : {type:STRING, format:enum, enum:["EAST", NORTH",
-		// "SOUTH", "WEST"]} 2. We can define apartment number as : {type:INTEGER, format:enum,
-		// enum:["101", "201", "301"]}
-		Enum []string `json:"enum,omitempty"`
-		// Optional. Example of the object. Will only populated when the object is the root.
-		Example any `json:"example,omitempty"`
-		// Optional. The format of the data. Supported formats: for NUMBER type: "float", "double" for INTEGER type: "int32", "int64" for STRING type: "email", "byte", etc
-		Format string `json:"format,omitempty"`
-		// Optional. SCHEMA FIELDS FOR TYPE ARRAY Schema of the elements of Type.ARRAY.
-		Items *Schema `json:"items,omitempty"`
-		// Optional. Maximum number of the elements for Type.ARRAY.
-		MaxItems *int64 `json:"maxItems,omitempty"`
-		// Optional. Maximum length of the Type.STRING
-		MaxLength *int64 `json:"maxLength,omitempty"`
-		// Optional. Maximum number of the properties for Type.OBJECT.
-		MaxProperties *int64 `json:"maxProperties,omitempty"`
-		// Optional. Maximum value of the Type.INTEGER and Type.NUMBER
-		Maximum *float64 `json:"maximum,omitempty"`
-		// Optional. Minimum number of the elements for Type.ARRAY.
-		MinItems *int64 `json:"minItems,omitempty"`
-		// Optional. SCHEMA FIELDS FOR TYPE STRING Minimum length of the Type.STRING
-		MinLength *int64 `json:"minLength,omitempty"`
-		// Optional. Minimum number of the properties for Type.OBJECT.
-		MinProperties *int64 `json:"minProperties,omitempty"`
-		// Optional. Minimum value of the Type.INTEGER and Type.NUMBER.
-		Minimum *float64 `json:"minimum,omitempty"`
-		// Optional. Indicates if the value may be null.
-		Nullable *bool `json:"nullable,omitempty"`
-		// Optional. Pattern of the Type.STRING to restrict a string to a regular expression.
-		Pattern string `json:"pattern,omitempty"`
-		// Optional. SCHEMA FIELDS FOR TYPE OBJECT Properties of Type.OBJECT.
-		Properties map[string]*Schema `json:"properties,omitempty"`
-		// Optional. The order of the properties. Not a standard field in open API spec. Only used to support the order of the properties.
-		PropertyOrdering []string `json:"propertyOrdering,omitempty"`
-		// Optional. Required properties of Type.OBJECT.
-		Required []string `json:"required,omitempty"`
-		// Optional. The title of the Schema.
-		Title string `json:"title,omitempty"`
-		// Optional. The type of the data.
-		Type string `json:"type,omitempty"`
+		AnyOf            []*Schema          `json:"anyOf,omitempty"`
+		Default          any                `json:"default,omitempty"`
+		Description      string             `json:"description,omitempty"`
+		Enum             []string           `json:"enum,omitempty"`
+		Example          any                `json:"example,omitempty"`
+		Format           string             `json:"format,omitempty"`
+		Items            *Schema            `json:"items,omitempty"`
+		MaxItems         *int64             `json:"maxItems,omitempty"`
+		MaxLength        *int64             `json:"maxLength,omitempty"`
+		MaxProperties    *int64             `json:"maxProperties,omitempty"`
+		Maximum          *float64           `json:"maximum,omitempty"`
+		MinItems         *int64             `json:"minItems,omitempty"`
+		MinLength        *int64             `json:"minLength,omitempty"`
+		MinProperties    *int64             `json:"minProperties,omitempty"`
+		Minimum          *float64           `json:"minimum,omitempty"`
+		Nullable         *bool              `json:"nullable,omitempty"`
+		Pattern          string             `json:"pattern,omitempty"`
+		Properties       map[string]*Schema `json:"properties,omitempty"`
+		PropertyOrdering []string           `json:"propertyOrdering,omitempty"`
+		Required         []string           `json:"required,omitempty"`
+		Title            string             `json:"title,omitempty"`
+		Type             string             `json:"type,omitempty"`
+	}
+
+	Layer struct {
+		Name         string        `json:"name"`
+		Description  string        `json:"description"`
+		Instructions *Instructions `json:"instructions"`
+		Tools        Tools         `json:"tools,omitempty"`
+	}
+
+	Tool struct {
+		Name         string  `json:"name"`
+		Description  string  `json:"description"`
+		InputSchema  *Schema `json:"input_schema"`
+		OutputSchema *Schema `json:"output_schema"`
+		Handle       Handle  `json:"-"`
+	}
+
+	Blob struct {
+		Name string `json:"name"`
+		Type string `json:"type"`
+		Data []byte `json:"data"`
+	}
+
+	Source struct {
+		Name        string `json:"name"`
+		Description string `json:"description"`
+		Type        string `json:"type"`
+		URL         string `json:"url"`
+	}
+
+	Call struct {
+		ID     string `json:"id"`
+		Name   string `json:"name"`
+		Input  Input  `json:"input,omitempty"`
+		Output Output `json:"output,omitempty"`
+	}
+
+	Part struct {
+		Call   *Call   `json:"call,omitempty"`
+		Blob   *Blob   `json:"blob,omitempty"`
+		Source *Source `json:"source,omitempty"`
+	}
+
+	Message struct {
+		Turn      Turn       `json:"turn"`
+		Text      *string    `json:"text"`
+		Structure *Structure `json:"structure,omitempty"`
+		Parts     Parts      `json:"parts,omitempty"`
+	}
+
+	Price struct {
+		Input  float64
+		Output float64
 	}
 
 	Keywords     []string
 	Instructions string
+	Turn         string
+	Modality     string
+
+	Input     map[string]any
+	Output    map[string]any
+	Structure map[string]any
+	Prices    map[Modality]Price
+
+	Messages []*Message
+	Layers   []*Layer
+	Tools    []*Tool
+	Parts    []*Part
+
+	Handle func(Input) (Output, error)
 
 	IFrontmatter interface {
 		Validate() error

@@ -17,10 +17,10 @@ func NewInstructionsFromBytes(value []byte) Instructions {
 	return NewInstructions(string(value))
 }
 
-func (i Instructions) Variables() ([]Variable, error) {
+func (i Instructions) Variables() ([]*Variable, error) {
 	re := regexp.MustCompile(`\{\{([^|{}]+)\|([^{}]+)\}\}`)
 	unique := make(map[string]bool)
-	var variables []Variable
+	var variables []*Variable
 	for _, match := range re.FindAllStringSubmatch(string(i), -1) {
 		if len(match) > 2 {
 			name := strings.TrimSpace(match[1])

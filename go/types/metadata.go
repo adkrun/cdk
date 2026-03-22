@@ -20,6 +20,7 @@ func (m Metadata) Validate() error {
 	if m.Name == "" {
 		return fmt.Errorf("name is required")
 	}
+
 	if m.Description == "" {
 		return fmt.Errorf("description is required")
 	}
