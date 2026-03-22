@@ -17,7 +17,7 @@ type (
 
 	ToolFile struct {
 		Frontmatter ToolFrontmatter
-		Body        Code
+		Body        *Code
 		//
 		filename string
 	}
@@ -109,10 +109,10 @@ type (
 	}
 
 	Layer struct {
-		Name         string        `json:"name"`
-		Description  string        `json:"description"`
-		Instructions *Instructions `json:"instructions"`
-		Tools        Tools         `json:"tools,omitempty"`
+		Name         string       `json:"name"`
+		Description  string       `json:"description"`
+		Instructions Instructions `json:"instructions"`
+		Tools        Tools        `json:"tools,omitempty"`
 	}
 
 	Tool struct {

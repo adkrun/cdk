@@ -24,3 +24,16 @@ func NewMessageStructure(structure *Structure, parts ...*Part) *Message {
 		Parts:     parts,
 	}
 }
+
+func NewMessageSources(text string, sources ...*Source) *Message {
+	parts := make([]*Part, len(sources))
+	for i, source := range sources {
+		parts[i] = &Part{Source: source}
+	}
+
+	return &Message{
+		Turn:  TurnAgent,
+		Text:  &text,
+		Parts: parts,
+	}
+}
