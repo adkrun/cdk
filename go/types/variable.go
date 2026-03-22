@@ -6,14 +6,22 @@ import (
 	"github.com/adkrun/cdk/go/constants"
 )
 
-func NewVariable(name, description string) Variable {
-	return Variable{
+func NewVariable(name, description string) *Variable {
+	return &Variable{
 		Name:        name,
 		Description: description,
 	}
 }
 
-func (v Variable) Validate() error {
+func NewVariableSecret(name, description string) *Variable {
+	return &Variable{
+		Name:        name,
+		Description: description,
+		Secret:      true,
+	}
+}
+
+func (v *Variable) Validate() error {
 	if v.Name == "" {
 		return fmt.Errorf("variable name is required")
 	}
@@ -33,10 +41,10 @@ func (v Variable) Validate() error {
 	return nil
 }
 
-func (v Variable) String() string {
+func (v *Variable) String() string {
 	return fmt.Sprintf("{{%s|%s}}", v.Name, v.Description)
 }
 
-func (v Variable) Bytes() []byte {
+func (v *Variable) Bytes() []byte {
 	return []byte(v.String())
 }
