@@ -69,6 +69,11 @@ type (
 		Version     string   `yaml:"version"`
 		License     string   `yaml:"license"`
 		Keywords    Keywords `yaml:"keywords"`
+		Name        string   `yaml:"name"`
+		Description string   `yaml:"description"`
+		Version     string   `yaml:"version"`
+		License     string   `yaml:"license"`
+		Keywords    Keywords `yaml:"keywords"`
 	}
 
 	Code struct {
@@ -78,6 +83,9 @@ type (
 	}
 
 	Variable struct {
+		Name        string `json:"name"`
+		Description string `json:"description"`
+		Secret      bool   `json:"secret,omitempty"`
 		Name        string `json:"name"`
 		Description string `json:"description"`
 		Secret      bool   `json:"secret,omitempty"`
@@ -163,6 +171,20 @@ type (
 
 	Keywords     []string
 	Instructions string
+	Turn         string
+	Modality     string
+
+	Input     map[string]any
+	Output    map[string]any
+	Structure map[string]any
+	Prices    map[Modality]Price
+
+	Messages []*Message
+	Layers   []*Layer
+	Tools    []*Tool
+	Parts    []*Part
+
+	Handle func(Input) (Output, error)
 	Turn         string
 	Modality     string
 
